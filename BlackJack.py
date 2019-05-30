@@ -43,7 +43,7 @@ class Blackjack():
 
     def play(self):
         '''The main game, this should be called to play BlackJack'''
-        while self.currency > 0:
+        while self.currency > self.minimum_bet:
             try:
                 self.__reset()
                 self.__place_bet()

@@ -49,13 +49,8 @@ class Blackjack():
                 self.__place_bet()
                 self.__deal_cards(2)
                 self.__deal_cards(2, dealer=True)
-                if not self.__sum_cards(self.dealer_cards[0]) == 21 and len(self.dealer_cards[0]) == 2:
-                    # Player plays if dealer didn't have a blackjack
-                    self.__player_actions(self.player_cards)
-                for i in range(len(self.player_cards)):
-                    if self.player_cards[i] not in self.blackjacks and self.__sum_cards(self.player_cards[i]) <= 21:
-                        # Dealer plays if player doesn't have a blackjack and if player didn't bust
-                        self.__dealer_actions()
+                self.__player_actions(self.player_cards)
+                self.__dealer_actions()
                 self.__pay_winner()
             except KeyboardInterrupt:
                 break
@@ -208,6 +203,9 @@ class Blackjack():
                 for card in card_set:
                     card_values.append(card.split()[0])
 
+                if self.__sum_cards(self.dealer_cards[0]) == 21 and len(self.dealer_cards[0]) == 2:
+                    # dealer got a blackjack
+                    break
                 if self.__sum_cards(self.player_cards[i]) > 21:
                     # player buested
                     break
@@ -261,18 +259,23 @@ class Blackjack():
 
     def __dealer_actions(self):
         '''Automates through the dealer's actions. Hits on 16 or lower, stays on 17 or higher.'''
-        while True:
-            if self.__sum_cards(self.dealer_cards[0]) == 21:
-                # Dealer has 21
-                break
-            elif self.__sum_cards(self.dealer_cards[0]) <= 16:
-                # Dealer needs to hit because he has 16 or less
-                self.__deal_cards(1, dealer=True)
-            elif self.__sum_cards(self.dealer_cards[0]) > 21:
-                # Dealer busted
-                break
-            else:
-                break
+        for i in range(len(self.player_cards)):
+            while self.__sum_cards(self.dealer_cards[0]) <= 16:
+                if self.player_cards[i] in self.blackjacks:
+                    # Player has a blackjack, don't bet this hand
+                    break
+                elif self.__sum_cards(self.player_cards[i]) > 21:
+                    # Player busted
+                    break
+                elif self.__sum_cards(self.dealer_cards[0]) == 21:
+                    # Dealer has 21
+                    break
+                elif self.__sum_cards(self.dealer_cards[0]) > 21:
+                    # Dealer busted
+                    break
+                else:
+                    # Dealer plays
+                    self.__deal_cards(1, dealer=True)
 
 
     def __pay_winner(self):

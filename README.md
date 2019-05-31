@@ -4,6 +4,7 @@ Games made in Python 3.6
 # BlackJack
 Play blackjack against an AI dealer!
 ```
+PyGames> python .\BlackJack.py
 Place a bet <5 min, 100 max, q to quit>: 5
 +--------------------+--------------------+
 |    Player Cards    |    Dealer Cards    |

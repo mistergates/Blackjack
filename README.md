@@ -1,7 +1,7 @@
 # PyGames
 Games made in Python 3.6
 
-# BlackJack
+##BlackJack
 Play blackjack against an AI dealer!
 ```
 PyGames> python .\BlackJack.py
